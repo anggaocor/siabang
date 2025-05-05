@@ -12,8 +12,6 @@ return (
     <br/>
     <nav className="flex justify-start">
       <Link href="/" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
-      <Link href="/posts" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Input Data</Link>
-      <Link href="/datas" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Data Pohon</Link>
       <Link href="/users" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Login</Link>
     </nav>
     <br/>
