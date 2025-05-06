@@ -159,7 +159,7 @@ export default function InputPage() {
                 }}
               />
               {previewUrl && (
-                <img src={previewUrl} alt="Preview" className="w-full h-auto mt-2 rounded" />
+                <img src={previewUrl} alt="Preview" className="w-5 h-auto mt-2 rounded" />
               )}
             </div>
             <button disabled={uploading} className="mx-2 text-grey-300 border bg-blue-600 px-2 py-1 rounded hover:text-gray-800 transition cursor-pointer">
