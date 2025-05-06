@@ -31,10 +31,12 @@ const Posts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editData, setEditData] = useState<Partial<DataPohon>>({});
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (user) setUserEmail(user.email);
     };
     getUser();
@@ -68,6 +70,46 @@ const Posts = () => {
     setFilteredPosts(filtered);
   }, [searchTerm, posts]);
 
+  const startEditing = (post: DataPohon) => {
+    setEditingId(post.id);
+    setEditData({ ...post });
+  };
+
+  const handleUpdate = async (id: number) => {
+    const { error } = await supabase
+      .from('datapohon')
+      .update({
+        nama_pemohon: editData.nama_pemohon,
+        jenis_pohon: editData.jenis_pohon,
+        jumlah_pohon: editData.jumlah_pohon,
+        lokasi: editData.lokasi,
+        keterangan: editData.keterangan
+      })
+      .eq('id', id);
+
+    if (error) {
+      alert('Gagal memperbarui data');
+    } else {
+      const updated = posts.map((p) =>
+        p.id === id ? { ...p, ...editData } as DataPohon : p
+      );
+      setPosts(updated);
+      setEditingId(null);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+    if (!confirmDelete) return;
+
+    const { error } = await supabase.from('datapohon').delete().eq('id', id);
+    if (error) {
+      alert('Gagal menghapus data');
+    } else {
+      setPosts(posts.filter((p) => p.id !== id));
+    }
+  };
+
   return (
     <RequireAuth>
       <div className="p-4 bg-gray-800 min-h-screen text-white">
@@ -97,22 +139,100 @@ const Posts = () => {
         )}
 
         <CardList>
-          {filteredPosts.map((post) => (
-            <div
-              key={post.id}
-              className="border-2 border-fuchsia-600 p-4 m-2 rounded-lg bg-white text-black"
-            >
-              <h2 className="text-xl font-bold">{post.nama_pemohon}</h2>
-              <p><strong>Jenis:</strong> {post.jenis_pohon}</p>
-              <p><strong>Jumlah:</strong> {post.jumlah_pohon}</p>
-              <p><strong>Lokasi:</strong> {post.lokasi}</p>
-              <p><strong>Keterangan:</strong> {post.keterangan}</p>
-              <p><strong>Tanggal:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
-              {post.foto_url && (
-                <img src={post.foto_url} alt="Foto Pohon" className="mt-2 w-40 h-auto rounded" />
-              )}
-            </div>
-          ))}
+          {filteredPosts.map((post) => {
+            const isEditing = post.id === editingId;
+            return (
+              <div
+                key={post.id}
+                className="border-2 border-fuchsia-600 p-4 m-2 rounded-lg bg-white text-black"
+              >
+                {isEditing ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editData.nama_pemohon}
+                      onChange={(e) =>
+                        setEditData({ ...editData, nama_pemohon: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1"
+                    />
+                    <input
+                      type="text"
+                      value={editData.jenis_pohon}
+                      onChange={(e) =>
+                        setEditData({ ...editData, jenis_pohon: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1"
+                    />
+                    <input
+                      type="number"
+                      value={editData.jumlah_pohon}
+                      onChange={(e) =>
+                        setEditData({ ...editData, jumlah_pohon: parseInt(e.target.value) })
+                      }
+                      className="mb-2 w-full border p-1"
+                    />
+                    <input
+                      type="text"
+                      value={editData.lokasi}
+                      onChange={(e) =>
+                        setEditData({ ...editData, lokasi: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1"
+                    />
+                    <input
+                      type="text"
+                      value={editData.keterangan}
+                      onChange={(e) =>
+                        setEditData({ ...editData, keterangan: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleUpdate(post.id)}
+                        className="bg-green-500 text-white px-3 py-1 rounded"
+                      >
+                        Simpan
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="bg-gray-500 text-white px-3 py-1 rounded"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-xl font-bold">{post.nama_pemohon}</h2>
+                    <p><strong>Jenis:</strong> {post.jenis_pohon}</p>
+                    <p><strong>Jumlah:</strong> {post.jumlah_pohon}</p>
+                    <p><strong>Lokasi:</strong> {post.lokasi}</p>
+                    <p><strong>Keterangan:</strong> {post.keterangan}</p>
+                    <p><strong>Tanggal:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
+                    {post.foto_url && (
+                      <img src={post.foto_url} alt="Foto Pohon" className="mt-2 w-40 h-auto rounded" />
+                    )}
+                    <div className="flex gap-2 mt-3">
+                      <button
+                        onClick={() => startEditing(post)}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(post.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
         </CardList>
       </div>
     </RequireAuth>
