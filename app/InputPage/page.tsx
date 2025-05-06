@@ -25,7 +25,7 @@ export default function InputPage() {
   const [formData, setFormData] = useState({
     nama_pemohon: "",
     jenis_pohon: "",
-    jumlah_pohon: 0,
+    jumlah_pohon: "",
     lokasi: "",
     foto: null as File | null,
     tanggal_survey: "",
@@ -75,9 +75,10 @@ export default function InputPage() {
         .upload(fileName, formData.foto);
 
       if (uploadError || !uploadData) {
-        alert("Upload foto gagal. Pastikan bucket 'foto-pohon' ada dan file valid.");
+        console.error('Upload error:', uploadError);
+        alert("Upload foto gagal: " + (uploadError?.message || "Tidak diketahui."));
         setUploading(false);
-        return;
+         return;
       }
 
       const { data: publicUrlData } = supabase.storage
@@ -112,6 +113,8 @@ export default function InputPage() {
     }
     setUploading(false);
   }
+
+  
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
