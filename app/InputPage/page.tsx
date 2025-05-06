@@ -1,0 +1,173 @@
+'use client';
+
+import React, { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import Link from 'next/link';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+interface DataPohon {
+  id: string;
+  nama_pemohon: string;
+  jenis_pohon: string;
+  jumlah_pohon: number;
+  lokasi: string;
+  foto_url: string;
+  tanggal_survey: string;
+  keterangan: string;
+  created_at: string;
+}
+
+export default function InputPage() {
+  const [formData, setFormData] = useState({
+    nama_pemohon: "",
+    jenis_pohon: "",
+    jumlah_pohon: 0,
+    lokasi: "",
+    foto: null as File | null,
+    tanggal_survey: "",
+    keterangan: "",
+  });
+
+  const [dataList, setDataList] = useState<DataPohon[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    const { data } = await supabase
+      .from("datapohon")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (data) setDataList(data);
+  }
+
+  function detectLocation() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setFormData((prev) => ({ ...prev, lokasi: `${latitude},${longitude}` }));
+    });
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setUploading(true);
+
+    if (formData.jumlah_pohon <= 0) {
+      alert("Jumlah pohon harus lebih dari 0");
+      setUploading(false);
+      return;
+    }
+
+    let foto_url = "";
+    if (formData.foto) {
+      const fileExt = formData.foto.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("foto-pohon")
+        .upload(fileName, formData.foto);
+
+      if (uploadError || !uploadData) {
+        alert("Upload foto gagal. Pastikan bucket 'foto-pohon' ada dan file valid.");
+        setUploading(false);
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("foto-pohon")
+        .getPublicUrl(fileName);
+      foto_url = publicUrlData.publicUrl;
+    }
+
+    const { error } = await supabase.from("datapohon").insert({
+      nama_pemohon: formData.nama_pemohon,
+      jenis_pohon: formData.jenis_pohon,
+      jumlah_pohon: formData.jumlah_pohon,
+      lokasi: formData.lokasi,
+      foto_url,
+      tanggal_survey: formData.tanggal_survey,
+      keterangan: formData.keterangan,
+    });
+
+    if (!error) {
+      alert("Data berhasil disimpan!");
+      setFormData({
+        nama_pemohon: "",
+        jenis_pohon: "",
+        jumlah_pohon: 0,
+        lokasi: "",
+        foto: null,
+        tanggal_survey: "",
+        keterangan: "",
+      });
+      setPreviewUrl(null);
+      fetchData();
+    }
+    setUploading(false);
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "jumlah_pohon" ? parseInt(value) || 0 : value
+    }));
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
+
+  return (
+    <>
+      <nav className="p-3 bg-gray-800 text-white">
+        <Link href="/" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Home</Link>
+        <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
+        <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
+      </nav>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800 text-white">
+        <main className="max-w-xl mx-auto p-4 bg-gray-600 text-white rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-4">INPUT DATA POHON</h1>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <input name="nama_pemohon" placeholder="Nama Pemohon" className="w-full p-2 border" onChange={handleChange} value={formData.nama_pemohon} required />
+            <input name="jenis_pohon" placeholder="Jenis Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jenis_pohon} required />
+            <input name="jumlah_pohon" type="number" min="1" placeholder="Jumlah Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jumlah_pohon} required />
+            <input name="lokasi" placeholder="Lokasi (GPS)" className="w-full p-2 border" onChange={handleChange} value={formData.lokasi} required />
+            <button type="button" onClick={detectLocation} className="mx-2 text-grey-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer">Deteksi Lokasi Otomatis</button>
+            <input name="tanggal_survey" type="date" className="w-full p-2 border" onChange={handleChange} value={formData.tanggal_survey} required />
+            <textarea name="keterangan" placeholder="Keterangan" className="w-full p-2 border" onChange={handleChange} value={formData.keterangan} />
+            <div className="space-y-2 border p-2 rounded">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  setFormData({ ...formData, foto: file });
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => setPreviewUrl(event.target?.result as string);
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+              {previewUrl && (
+                <img src={previewUrl} alt="Preview" className="w-full h-auto mt-2 rounded" />
+              )}
+            </div>
+            <button disabled={uploading} className="mx-2 text-grey-300 border bg-blue-600 px-2 py-1 rounded hover:text-gray-800 transition cursor-pointer">
+              {uploading ? "Menyimpan..." : "Simpan Data"}
+            </button>
+          </form>
+        </main>
+      </div>
+    </>
+  );
+}

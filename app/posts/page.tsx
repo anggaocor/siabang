@@ -42,7 +42,7 @@ const Posts = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/login');
+    router.push('/');
   };
 
   useEffect(() => {
@@ -72,15 +72,14 @@ const Posts = () => {
     <RequireAuth>
       <div className="p-4 bg-gray-800 min-h-screen text-white">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-gray-300 text-2xl">Data Pohon</h1>
+          <strong className="text-gray-300 text-2xl">DATA POHON</strong>
           {userEmail && <p className="text-sm text-gray-400">Login sebagai: {userEmail}</p>}
         </div>
 
         <nav className="mb-6">
           <Link href="/" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Home</Link>
-          <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
-          <Link href="/datas" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
-          <button onClick={handleLogout} className="mx-2 text-red-500 underline">Logout</button>
+          <Link href="/InputPage" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
+          <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
         </nav>
 
         <input
@@ -88,7 +87,7 @@ const Posts = () => {
           placeholder="Cari berdasarkan nama pemohon atau jenis pohon..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="px-3 py-2 border rounded w-full md:w-1/2 mb-6 text-black"
+          className="px-3 py-2 border rounded w-full md:w-1/2 mb-6 text-grey-800"
         />
 
         {loading && <p>Loading...</p>}

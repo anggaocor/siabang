@@ -12,7 +12,7 @@ return (
     <br/>
     <nav className="flex justify-start">
       <Link href="/" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
-      <Link href="/users" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Login</Link>
+      <Link href="/login" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Login</Link>
     </nav>
     <br/>
     <section className="text-center text-gray-300 space-y-6">
