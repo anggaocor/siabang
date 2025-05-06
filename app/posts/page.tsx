@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
@@ -37,7 +38,11 @@ const Posts = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) setUserEmail(user.email);
+      if (user && user.email) {
+        setUserEmail(user.email);
+      } else {
+        console.warn('User or email not found');
+      }
     };
     getUser();
   }, []);
@@ -211,9 +216,8 @@ const Posts = () => {
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
                     <p><strong>Tanggal:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
-                    {post.foto_url && (
-                      <img src={post.foto_url} alt="Foto Pohon" className="mt-2 w-40 h-auto rounded" />
-                    )}
+                    <Image src={post.foto_url} alt="Foto Pohon" width={160} className="mt-2 rounded" />
+                    <Image src={post.foto_url} alt="Foto Pohon" width={160} height={160} className="mt-2 w-40 h-auto rounded" />
                     <div className="flex gap-2 mt-3">
                       <button
                         onClick={() => startEditing(post)}
