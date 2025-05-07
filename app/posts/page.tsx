@@ -152,7 +152,7 @@ const Posts = () => {
     const fileName = `${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
   
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('foto-pohon')
       .upload(filePath, file);
   
