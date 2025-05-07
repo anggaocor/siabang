@@ -1,14 +1,30 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['mxwliocmvvthuylwvooq.supabase.co'], // Ganti dengan domain Supabase Anda
+    domains: ['mxwliocmvvthuylwvooq.supabase.co'], // domain supabase storage
   },
 };
 
-module.exports = {
-  // ...
-  matcher: ['/InputPage'],
+export default nextConfig;
+
+// Redirects
+export async function redirects() {
+  return [
+    {
+      source: '/InputPage',
+      destination: '/login',
+      permanent: false,
+    },
+  ];
 }
 
-export default nextConfig;
+// Rewrites
+export async function rewrites() {
+  return [
+    {
+      source: '/InputPage',
+      destination: '/posts', // ganti sesuai kebutuhan
+    },
+  ];
+}
