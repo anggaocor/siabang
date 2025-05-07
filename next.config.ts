@@ -6,4 +6,9 @@ const nextConfig: NextConfig = {
   },
 };
 
+module.exports = {
+  // ...
+  matcher: ['/InputPage'],
+}
+
 export default nextConfig;
