@@ -128,37 +128,70 @@ export default function InputPage() {
         <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
         <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
       </nav>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800 text-white">
-        <main className="max-w-xl mx-auto p-4 bg-gray-600 text-white rounded-lg shadow-md">
+      <div className="flex flex-col items-center justify-center min-h-auto bg-gray-800 text-white">
+        <main className="max-w-xl mx-auto p-4 bg-gray-600 text-white rounded-lg shadow-md mb-20">
           <h1 className="text-2xl font-bold mb-4">INPUT DATA POHON</h1>
           <form onSubmit={handleSubmit} className="space-y-3">
+            <label className="block text-sm font-medium text-gray-300">Nama Pemohon</label>
             <input name="nama_pemohon" placeholder="Nama Pemohon" className="w-full p-2 border" onChange={handleChange} value={formData.nama_pemohon} required />
+            <label className="block text-sm font-medium text-gray-300">Perihal</label>
             <input name="perihal" placeholder="Perihal" className="w-full p-2 border" onChange={handleChange} value={formData.perihal} required />
+            <label className="block text-sm font-medium text-gray-300">Jenis Pohon</label>
             <input name="jenis_pohon" placeholder="Jenis Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jenis_pohon} required />
+            <label className="block text-sm font-medium text-gray-300">Jumlah Pohon</label>
             <input name="jumlah_pohon" type="number" min="1" placeholder="Jumlah Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jumlah_pohon} required />
+            <label className="block text-sm font-medium text-gray-300">Lokasi (GPS)</label>
             <input name="lokasi" placeholder="Lokasi (GPS)" className="w-full p-2 border" onChange={handleChange} value={formData.lokasi} required />
             <button type="button" onClick={detectLocation} className="mx-2 text-grey-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer">Deteksi Lokasi Otomatis</button>
             <label className="block text-sm font-medium text-gray-300">Tanggal Survey</label>
             <input name="tanggal_survey" type="date" placeholder="Tanggal Survey" className="w-full p-2 border" onChange={handleChange} value={formData.tanggal_survey} required />
+            <label className="block text-sm font-medium text-gray-300">Keterangan</label>
             <textarea name="keterangan" placeholder="Keterangan" className="w-full p-2 border" onChange={handleChange} value={formData.keterangan} />
-            <div className="space-y-2 border p-2 rounded">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0] || null;
-                  setFormData({ ...formData, foto: file });
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => setPreviewUrl(event.target?.result as string);
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
-              {previewUrl && (
-                <Image src={previewUrl} alt="Preview" width={100} height={100} className="w-5 h-auto mt-2 rounded" />
-              )}
-            </div>
+            <label className="block text-sm font-medium text-gray-300">Upload Foto</label>
+            <button
+              type="button"
+              className="mx-2 text-grey-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer"
+            >
+              <div className="flex items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0] || null;
+                    setFormData({ ...formData, foto: file });
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        setPreviewUrl(event.target?.result as string);
+                      };
+                      reader.readAsDataURL(file);
+
+                      // Set uploading state to true while uploading
+                      setUploading(true);
+
+                      // Simulate uploading process (you can replace this with actual upload logic)
+                      setTimeout(() => {
+                        // After upload completes (or simulate completion), set uploading to false
+                        setUploading(false);
+                        alert("Foto berhasil di-upload!"); // Notify user after successful upload
+                      }, 2000); // Simulating upload time (2 seconds)
+                    }
+                  }}
+                />
+                {previewUrl && !uploading && (
+                  <div className="mt-2">
+                    <Image src={previewUrl} alt="Preview" width={100} height={100} className="w-5 h-auto rounded" />
+                    <p className="mt-2 text-green-500">Foto Ter-upload</p>
+                  </div>
+                )}
+                {uploading && (
+                  <div className="mt-2 text-yellow-500">
+                    <p>Uploading...</p>
+                  </div>
+                )}
+              </div>
+            </button>
+            <br />
             <button disabled={uploading} className="mx-2 text-grey-300 border bg-blue-600 px-2 py-1 rounded hover:text-gray-800 transition cursor-pointer">
               {uploading ? "Menyimpan..." : "Simpan Data"}
             </button>

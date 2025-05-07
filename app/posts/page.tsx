@@ -160,66 +160,88 @@ const Posts = () => {
               >
                 {isEditing ? (
                   <>
-                    <input
+                    <label className="text-lg font-bold">Edit Data</label>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-700">Nama Pemohon</label>
+                      <input
                       type="text"
                       value={editData.nama_pemohon || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, nama_pemohon: e.target.value })
                       }
-                      className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      className="w-full border p-1 bg-gray-100"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-700">Perihal</label>
+                      <input
                       type="text"
                       value={editData.perihal || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, perihal: e.target.value })
                       }
-                      className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      className="w-full border p-1 bg-gray-100"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-700">Jenis Pohon</label>
+                      <input
                       type="text"
                       value={editData.jenis_pohon || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, jenis_pohon: e.target.value })
                       }
-                      className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      className="w-full border p-1 bg-gray-100"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-700">Jumlah Pohon</label>
+                      <input
                       type="number"
                       value={editData.jumlah_pohon || 0}
                       onChange={(e) => {
                         const value = parseInt(e.target.value);
                         setEditData({
-                          ...editData,
-                          jumlah_pohon: isNaN(value) ? 0 : value
+                        ...editData,
+                        jumlah_pohon: isNaN(value) ? 0 : value
                         });
                       }}
-                      className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      className="w-full border p-1 bg-gray-100"
+                      />
+                    </div>
+                    <div className='mb-2'>
+                      <label className="block text-sm font-medium text-gray-700">Lokasi (GPS)</label>
+                      <input
                       type="text"
                       value={editData.lokasi || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, lokasi: e.target.value })
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Tanggal Survey</label>
+                      <input
                       type="text"
                       value={editData.tanggal_survey || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, tanggal_survey: e.target.value })
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
-                    />
-                    <input
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Keterangan</label>
+                      <input
                       type="text"
                       value={editData.keterangan || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, keterangan: e.target.value })
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
-                    />
+                      />
+                    </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleUpdate(post.id)}
