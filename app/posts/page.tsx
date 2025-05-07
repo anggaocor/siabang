@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import CardList from '../components/Posts/CardList';
+import CardList from '../components/CardList';
 import RequireAuth from '../components/RequireAuth';
 
 const supabase = createClient(

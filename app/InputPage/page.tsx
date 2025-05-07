@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Image from 'next/image';
 import { createClient } from "@supabase/supabase-js";
 import Link from 'next/link';
 
@@ -8,18 +9,6 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
-
-interface DataPohon {
-  id: string;
-  nama_pemohon: string;
-  jenis_pohon: string;
-  jumlah_pohon: number;
-  lokasi: string;
-  foto_url: string;
-  tanggal_survey: string;
-  keterangan: string;
-  created_at: string;
-}
 
 export default function InputPage() {
   const [formData, setFormData] = useState({
@@ -32,21 +21,8 @@ export default function InputPage() {
     keterangan: "",
   });
 
-  const [dataList, setDataList] = useState<DataPohon[]>([]);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function fetchData() {
-    const { data } = await supabase
-      .from("datapohon")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (data) setDataList(data);
-  }
 
   function detectLocation() {
     if (!navigator.geolocation) return;
@@ -60,7 +36,7 @@ export default function InputPage() {
     e.preventDefault();
     setUploading(true);
 
-    if (formData.jumlah_pohon <= 0) {
+    if (formData.jumlah_pohon <= "") {
       alert("Jumlah pohon harus lebih dari 0");
       setUploading(false);
       return;
@@ -102,14 +78,13 @@ export default function InputPage() {
       setFormData({
         nama_pemohon: "",
         jenis_pohon: "",
-        jumlah_pohon: 0,
+        jumlah_pohon: "",
         lokasi: "",
         foto: null,
         tanggal_survey: "",
         keterangan: "",
       });
       setPreviewUrl(null);
-      fetchData();
     }
     setUploading(false);
   }
@@ -162,7 +137,7 @@ export default function InputPage() {
                 }}
               />
               {previewUrl && (
-                <img src={previewUrl} alt="Preview" className="w-5 h-auto mt-2 rounded" />
+                <Image src={previewUrl} alt="Preview" width={100} height={100} className="w-5 h-auto mt-2 rounded" />
               )}
             </div>
             <button disabled={uploading} className="mx-2 text-grey-300 border bg-blue-600 px-2 py-1 rounded hover:text-gray-800 transition cursor-pointer">
