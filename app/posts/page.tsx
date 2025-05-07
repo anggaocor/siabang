@@ -119,7 +119,8 @@ const Posts = () => {
         jumlah_pohon: editData.jumlah_pohon,
         lokasi: editData.lokasi,
         tanggal_survey: editData.tanggal_survey,
-        keterangan: editData.keterangan
+        keterangan: editData.keterangan,
+        foto_url: editData.foto_url,
       })
       .eq('id', id);
 
@@ -145,6 +146,32 @@ const Posts = () => {
       setPosts(posts.filter((p) => p.id !== id));
     }
   };
+
+  const uploadFoto = async (file: File) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+  
+    const { data, error } = await supabase.storage
+      .from('foto-pohon')
+      .upload(filePath, file);
+  
+    if (error) {
+      alert('Gagal mengunggah foto: ' + error.message);
+      return;
+    }
+  
+    const { data: publicUrlData } = supabase
+      .storage
+      .from('foto-pohon')
+      .getPublicUrl(filePath);
+  
+    const publicUrl = publicUrlData?.publicUrl;
+  
+    if (publicUrl) {
+      setEditData((prev) => ({ ...prev, foto_url: publicUrl }));
+    }
+  }; 
 
   return (
     <RequireAuth>
@@ -265,6 +292,21 @@ const Posts = () => {
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
                       />
+                    </div>
+                    <div>
+                    <label className="block text-sm font-medium text-gray-700">Ganti Foto</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          // Lakukan upload ke Supabase Storage atau konversi ke URL blob sementara
+                          uploadFoto(file); // Fungsi ini harus kamu definisikan
+                        }
+                      }}
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                    />
                     </div>
                     <div className="flex gap-2">
                       <button
