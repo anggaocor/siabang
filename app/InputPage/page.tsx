@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 import { createClient } from "@supabase/supabase-js";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,6 +12,10 @@ const supabase = createClient(
 );
 
 export default function InputPage() {
+  const router = useRouter();
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     nama_pemohon: "",
     jenis_pohon: "",
@@ -21,8 +26,16 @@ export default function InputPage() {
     keterangan: "",
   });
 
-  const [uploading, setUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // Proteksi: hanya bisa diakses jika sudah login
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login");
+      }
+    };
+    checkSession();
+  }, [router]);
 
   function detectLocation() {
     if (!navigator.geolocation) return;
@@ -35,6 +48,14 @@ export default function InputPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setUploading(true);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      alert("Anda harus login terlebih dahulu.");
+      setUploading(false);
+      router.push("/login");
+      return;
+    }
 
     if (formData.jumlah_pohon <= "") {
       alert("Jumlah pohon harus lebih dari 0");
@@ -54,7 +75,7 @@ export default function InputPage() {
         console.error('Upload error:', uploadError);
         alert("Upload foto gagal: " + (uploadError?.message || "Tidak diketahui."));
         setUploading(false);
-         return;
+        return;
       }
 
       const { data: publicUrlData } = supabase.storage
@@ -89,8 +110,6 @@ export default function InputPage() {
     setUploading(false);
   }
 
-  
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -101,7 +120,7 @@ export default function InputPage() {
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    window.location.href = "/";
+    router.push("/login");
   }
 
   return (
