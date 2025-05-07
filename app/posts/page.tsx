@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import CardList from '../components/CardList';
 import RequireAuth from '../components/RequireAuth';
+import { exportToExcel } from "@/utils/exportToExcel";
+
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
@@ -53,6 +55,28 @@ const Posts = () => {
     await supabase.auth.signOut();
     router.push('/');
   };
+
+  const handleExport = async () => {
+    const { data, error } = await supabase.from("datapohon").select("*");
+    if (error) {
+      alert("Gagal mengambil data: " + error.message);
+    } else if (data) {
+      const processedData = data.map((item) => ({
+        "Nama Pemohon": item.nama_pemohon,
+        "Perihal": item.perihal,
+        "Jenis Pohon": item.jenis_pohon,
+        "Jumlah Pohon": item.jumlah_pohon,
+        "Lokasi (GPS)": item.lokasi,
+        "Tanggal Survey": new Date(item.tanggal_survey).toLocaleDateString("id-ID"),
+        "Keterangan": item.keterangan,
+        "Tanggal Input": new Date(item.created_at).toLocaleDateString("id-ID"),
+        "URL Foto": item.foto_url
+      }));
+  
+      exportToExcel(processedData, "Data_Pendataan_Pohon");
+    }
+  };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,6 +157,14 @@ const Posts = () => {
         <nav className="mb-6">
           <Link href="/" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Home</Link>
           <Link href="/InputPage" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
+          <div className="mt-6">
+            <button
+              onClick={handleExport}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            >
+              Export ke Excel
+            </button>
+          </div>
           <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
         </nav>
 
