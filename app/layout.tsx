@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SIABANG",
   description: "Sistem Informasi Pemangkasan Dan Penebangan Pohon Kota Banjarbaru",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
