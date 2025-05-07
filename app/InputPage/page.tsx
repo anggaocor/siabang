@@ -138,7 +138,7 @@ export default function InputPage() {
             <input name="jumlah_pohon" type="number" min="1" placeholder="Jumlah Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jumlah_pohon} required />
             <input name="lokasi" placeholder="Lokasi (GPS)" className="w-full p-2 border" onChange={handleChange} value={formData.lokasi} required />
             <button type="button" onClick={detectLocation} className="mx-2 text-grey-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer">Deteksi Lokasi Otomatis</button>
-            <input name="tanggal_survey" type="date" className="w-full p-2 border" onChange={handleChange} value={formData.tanggal_survey} required />
+            <input name="tanggal_survey" placeholder="Tanggal Survey" type="date" className="w-full p-2 border" onChange={handleChange} value={formData.tanggal_survey} required />
             <textarea name="keterangan" placeholder="Keterangan" className="w-full p-2 border" onChange={handleChange} value={formData.keterangan} />
             <div className="space-y-2 border p-2 rounded">
               <input
