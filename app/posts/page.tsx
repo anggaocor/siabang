@@ -16,9 +16,11 @@ const supabase = createClient(
 interface DataPohon {
   id: number;
   nama_pemohon: string;
+  perihal: string;
   jenis_pohon: string;
   jumlah_pohon: number;
   lokasi: string;
+  tanggal_survey: string;
   foto_url: string;
   keterangan: string;
   created_at: string;
@@ -88,9 +90,11 @@ const Posts = () => {
       .from('datapohon')
       .update({
         nama_pemohon: editData.nama_pemohon,
+        perihal: editData.perihal,
         jenis_pohon: editData.jenis_pohon,
         jumlah_pohon: editData.jumlah_pohon,
         lokasi: editData.lokasi,
+        tanggal_survey: editData.tanggal_survey,
         keterangan: editData.keterangan
       })
       .eq('id', id);
@@ -166,6 +170,14 @@ const Posts = () => {
                     />
                     <input
                       type="text"
+                      value={editData.perihal || ''}
+                      onChange={(e) =>
+                        setEditData({ ...editData, perihal: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                    />
+                    <input
+                      type="text"
                       value={editData.jenis_pohon || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, jenis_pohon: e.target.value })
@@ -189,6 +201,14 @@ const Posts = () => {
                       value={editData.lokasi || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, lokasi: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                    />
+                    <input
+                      type="text"
+                      value={editData.tanggal_survey || ''}
+                      onChange={(e) =>
+                        setEditData({ ...editData, tanggal_survey: e.target.value })
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
                     />
@@ -219,10 +239,12 @@ const Posts = () => {
                   <>
                     <h2 className="text-xl font-bold">{post.nama_pemohon}</h2>
                     <p><strong>Jenis:</strong> {post.jenis_pohon}</p>
+                    <p><strong>Perihal:</strong> {post.perihal}</p>
                     <p><strong>Jumlah:</strong> {post.jumlah_pohon}</p>
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
+                    <p><strong>Tanggal Survey:</strong> {post.tanggal_survey}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
-                    <p><strong>Tanggal:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
+                    <p><strong>Tanggal Input Data:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
                     <Image
                       src={post.foto_url}
                       alt="Foto Pohon"

@@ -13,6 +13,7 @@ export default function InputPage() {
 
   const [formData, setFormData] = useState({
     nama_pemohon: "",
+    perihal: "",
     jenis_pohon: "",
     jumlah_pohon: "",
     lokasi: "",
@@ -81,6 +82,7 @@ export default function InputPage() {
 
     const { error } = await supabase.from("datapohon").insert({
       nama_pemohon: formData.nama_pemohon,
+      perihal: formData.perihal,
       jenis_pohon: formData.jenis_pohon,
       jumlah_pohon: formData.jumlah_pohon,
       lokasi: formData.lokasi,
@@ -93,6 +95,7 @@ export default function InputPage() {
       alert("Data berhasil disimpan!");
       setFormData({
         nama_pemohon: "",
+        perihal: "",
         jenis_pohon: "",
         jumlah_pohon: "",
         lokasi: "",
@@ -130,6 +133,7 @@ export default function InputPage() {
           <h1 className="text-2xl font-bold mb-4">INPUT DATA POHON</h1>
           <form onSubmit={handleSubmit} className="space-y-3">
             <input name="nama_pemohon" placeholder="Nama Pemohon" className="w-full p-2 border" onChange={handleChange} value={formData.nama_pemohon} required />
+            <input name="perihal" placeholder="Perihal" className="w-full p-2 border" onChange={handleChange} value={formData.perihal} required />
             <input name="jenis_pohon" placeholder="Jenis Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jenis_pohon} required />
             <input name="jumlah_pohon" type="number" min="1" placeholder="Jumlah Pohon" className="w-full p-2 border" onChange={handleChange} value={formData.jumlah_pohon} required />
             <input name="lokasi" placeholder="Lokasi (GPS)" className="w-full p-2 border" onChange={handleChange} value={formData.lokasi} required />
