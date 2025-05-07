@@ -41,11 +41,11 @@ const Posts = () => {
       if (user && user.email) {
         setUserEmail(user.email);
       } else {
-        console.warn('User or email not found');
+        router.push('/login');
       }
     };
     getUser();
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -81,6 +81,9 @@ const Posts = () => {
   };
 
   const handleUpdate = async (id: number) => {
+    const confirmUpdate = confirm('Simpan perubahan?');
+    if (!confirmUpdate) return;
+
     const { error } = await supabase
       .from('datapohon')
       .update({
@@ -134,7 +137,7 @@ const Posts = () => {
           placeholder="Cari berdasarkan nama pemohon atau jenis pohon..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="px-3 py-2 border rounded w-full md:w-1/2 mb-6 text-grey-800"
+          className="px-3 py-2 border rounded w-full md:w-1/2 mb-6 text-black bg-gray-100"
         />
 
         {loading && <p>Loading...</p>}
@@ -155,43 +158,47 @@ const Posts = () => {
                   <>
                     <input
                       type="text"
-                      value={editData.nama_pemohon}
+                      value={editData.nama_pemohon || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, nama_pemohon: e.target.value })
                       }
-                      className="mb-2 w-full border p-1"
+                      className="mb-2 w-full border p-1 bg-gray-100"
                     />
                     <input
                       type="text"
-                      value={editData.jenis_pohon}
+                      value={editData.jenis_pohon || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, jenis_pohon: e.target.value })
                       }
-                      className="mb-2 w-full border p-1"
+                      className="mb-2 w-full border p-1 bg-gray-100"
                     />
                     <input
                       type="number"
-                      value={editData.jumlah_pohon}
-                      onChange={(e) =>
-                        setEditData({ ...editData, jumlah_pohon: parseInt(e.target.value) })
-                      }
-                      className="mb-2 w-full border p-1"
+                      value={editData.jumlah_pohon || 0}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        setEditData({
+                          ...editData,
+                          jumlah_pohon: isNaN(value) ? 0 : value
+                        });
+                      }}
+                      className="mb-2 w-full border p-1 bg-gray-100"
                     />
                     <input
                       type="text"
-                      value={editData.lokasi}
+                      value={editData.lokasi || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, lokasi: e.target.value })
                       }
-                      className="mb-2 w-full border p-1"
+                      className="mb-2 w-full border p-1 bg-gray-100"
                     />
                     <input
                       type="text"
-                      value={editData.keterangan}
+                      value={editData.keterangan || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, keterangan: e.target.value })
                       }
-                      className="mb-2 w-full border p-1"
+                      className="mb-2 w-full border p-1 bg-gray-100"
                     />
                     <div className="flex gap-2">
                       <button
@@ -216,8 +223,13 @@ const Posts = () => {
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
                     <p><strong>Tanggal:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
-                    <Image src={post.foto_url} alt="Foto Pohon" width={160} className="mt-2 rounded" />
-                    <Image src={post.foto_url} alt="Foto Pohon" width={160} height={160} className="mt-2 w-40 h-auto rounded" />
+                    <Image
+                      src={post.foto_url}
+                      alt="Foto Pohon"
+                      width={160}
+                      height={160}
+                      className="mt-2 rounded"
+                    />
                     <div className="flex gap-2 mt-3">
                       <button
                         onClick={() => startEditing(post)}
