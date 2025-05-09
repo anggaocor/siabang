@@ -160,7 +160,7 @@ export default function InputPage() {
             <label className="block text-sm font-medium text-gray-300">Upload Foto</label>
             <button
               type="button"
-              className="w-auto text-gray-300 border px-1 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer text-sm"
+              className="w-auto text-gray-800 border px-2 py-2 rounded-md bg-green-300 hover:text-white transition cursor-pointer text-sm"
             >
               <div className="flex flex-col sm:flex-row items-center">
               <input
