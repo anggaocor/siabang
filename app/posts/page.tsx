@@ -19,8 +19,10 @@ interface DataPohon {
   id: number;
   nama_pemohon: string;
   perihal: string;
+  tanggal_surat: string;
   jenis_pohon: string;
   jumlah_pohon: number;
+  kondisi_pohon: string;
   lokasi: string;
   tanggal_survey: string;
   foto_url: string;
@@ -64,8 +66,10 @@ const Posts = () => {
     const processedData = data.map((item) => ({
       "Nama Pemohon": item.nama_pemohon,
       "Perihal": item.perihal,
+      "Tanggal Surat": new Date(item.tanggal_surat).toLocaleDateString("id-ID"),
       "Jenis Pohon": item.jenis_pohon,
       "Jumlah Pohon": item.jumlah_pohon,
+      "Kondisi Pohon": item.kondisi_pohon,
       "Lokasi (GPS)": item.lokasi,
       "Tanggal Survey": new Date(item.tanggal_survey).toLocaleDateString("id-ID"),
       "Keterangan": item.keterangan,
@@ -96,7 +100,9 @@ const Posts = () => {
   useEffect(() => {
     const filtered = posts.filter((post) =>
       post.nama_pemohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.jenis_pohon.toLowerCase().includes(searchTerm.toLowerCase())
+      post.jenis_pohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.kondisi_pohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.perihal.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPosts(filtered);
   }, [searchTerm, posts]);
@@ -115,8 +121,10 @@ const Posts = () => {
       .update({
         nama_pemohon: editData.nama_pemohon,
         perihal: editData.perihal,
+        tanggal_surat: editData.tanggal_surat,
         jenis_pohon: editData.jenis_pohon,
         jumlah_pohon: editData.jumlah_pohon,
+        kondisi_pohon: editData.kondisi_pohon,
         lokasi: editData.lokasi,
         tanggal_survey: editData.tanggal_survey,
         keterangan: editData.keterangan,
@@ -234,6 +242,17 @@ const Posts = () => {
                       className="w-full border p-1 bg-gray-100"
                       />
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Tanggal Surat</label>
+                      <input
+                      type="date"
+                      value={editData.tanggal_surat|| ''}
+                      onChange={(e) =>
+                        setEditData({ ...editData, tanggal_surat: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                      />
+                    </div>
                     <div className="mb-2">
                       <label className="block text-sm font-medium text-gray-700">Jenis Pohon</label>
                       <input
@@ -260,6 +279,17 @@ const Posts = () => {
                       className="w-full border p-1 bg-gray-100"
                       />
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Kondisi Pohon</label>
+                      <input
+                      type="text"
+                      value={editData.kondisi_pohon || ''}
+                      onChange={(e) =>
+                        setEditData({ ...editData, kondisi_pohon: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                      />
+                    </div>
                     <div className='mb-2'>
                       <label className="block text-sm font-medium text-gray-700">Lokasi (GPS)</label>
                       <input
@@ -274,7 +304,7 @@ const Posts = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Tanggal Survey</label>
                       <input
-                      type="text"
+                      type="date"
                       value={editData.tanggal_survey || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, tanggal_survey: e.target.value })
@@ -324,11 +354,13 @@ const Posts = () => {
                     </div>
                   </>
                 ) : (
-                  <>
-                    <h2 className="text-xl font-bold">{post.nama_pemohon}</h2>
-                    <p><strong>Jenis:</strong> {post.jenis_pohon}</p>
+                  <p>
+                    <h2 className="text-xl font-bold">Pemohon: {post.nama_pemohon}</h2>
                     <p><strong>Perihal:</strong> {post.perihal}</p>
-                    <p><strong>Jumlah:</strong> {post.jumlah_pohon}</p>
+                    <p><strong>Tanggal Surat:</strong> {new Date(post.tanggal_surat).toLocaleDateString()}</p>
+                    <p><strong>Jenis Pohon:</strong> {post.jenis_pohon}</p>
+                    <p><strong>Jumlah Pohon:</strong> {post.jumlah_pohon}</p>
+                    <p><strong>Kondisi Pohon:</strong> {post.kondisi_pohon}</p>
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
                     <p><strong>Tanggal Survey:</strong> {post.tanggal_survey}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
@@ -354,7 +386,7 @@ const Posts = () => {
                         Hapus
                       </button>
                     </div>
-                  </>
+                  </p>
                 )}
               </div>
             );
