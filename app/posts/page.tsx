@@ -357,14 +357,14 @@ const Posts = () => {
                   <p>
                     <h2 className="text-xl font-bold">Pemohon: {post.nama_pemohon}</h2>
                     <p><strong>Perihal:</strong> {post.perihal}</p>
-                    <p><strong>Tanggal Surat:</strong> {new Date(post.tanggal_surat).toLocaleDateString()}</p>
+                    <p><strong>Tanggal Surat:</strong> {post.tanggal_surat}</p>
                     <p><strong>Jenis Pohon:</strong> {post.jenis_pohon}</p>
                     <p><strong>Jumlah Pohon:</strong> {post.jumlah_pohon}</p>
                     <p><strong>Kondisi Pohon:</strong> {post.kondisi_pohon}</p>
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
                     <p><strong>Tanggal Survey:</strong> {post.tanggal_survey}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
-                    <p><strong>Tanggal Input Data:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
+                    <p><strong>Tanggal Input Data:</strong> {post.created_at}</p>
                     <Image
                       src={post.foto_url}
                       alt="Foto Pohon"
