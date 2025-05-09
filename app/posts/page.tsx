@@ -355,16 +355,43 @@ const Posts = () => {
                   </>
                 ) : (
                   <p>
-                    <h2 className="text-xl font-bold">Pemohon: {post.nama_pemohon}</h2>
+                    <h2 className="text-xl font-bold text-blue-600">Pemohon: {post.nama_pemohon}</h2>
                     <p><strong>Perihal:</strong> {post.perihal}</p>
-                    <p><strong>Tanggal Surat:</strong> {post.tanggal_surat}</p>
+                    <p>
+                      <strong>Tanggal Surat:</strong>{' '}
+                      {post.tanggal_surat
+                        ? new Date(post.tanggal_surat).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                          })
+                        : ''}
+                    </p>
                     <p><strong>Jenis Pohon:</strong> {post.jenis_pohon}</p>
                     <p><strong>Jumlah Pohon:</strong> {post.jumlah_pohon}</p>
                     <p><strong>Kondisi Pohon:</strong> {post.kondisi_pohon}</p>
                     <p><strong>Lokasi:</strong> {post.lokasi}</p>
-                    <p><strong>Tanggal Survey:</strong> {post.tanggal_survey}</p>
+                     <p>
+                      <strong>Tanggal Suvey:</strong>{' '}
+                      {post.tanggal_survey
+                        ? new Date(post.tanggal_survey).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                          })
+                        : ''}
+                    </p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
-                    <p><strong>Tanggal Input Data:</strong> {post.created_at}</p>
+                    <p>
+                      <strong>Tanggal Input Data:</strong>{' '}
+                      {post.created_at
+                        ? new Date(post.created_at).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                          })
+                        : ''}
+                    </p>                   
                     <Image
                       src={post.foto_url}
                       alt="Foto Pohon"
