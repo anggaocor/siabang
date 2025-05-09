@@ -4,11 +4,13 @@ import Image from "next/image";
 export default function Home() {
 return (
   <>
+    <div className="bg-gray-800 p-4">
     <h1 className="text-center text-2xl font-bold text-gray-300">SIABANG</h1>
     <p className="text-center text-gray-300">
       <strong>SISTEM INFORMASI</strong> PEMANGKASAN DAN PENEBANGAN POHON 
       <strong> KOTA BANJARBARU</strong>
     </p>
+    </div>
     <br/>
     <nav className="flex justify-start">
       <Link href="/" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
