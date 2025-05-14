@@ -133,7 +133,7 @@ export default function InputPage() {
   return (
     <>
       <nav className="p-3 bg-gray-800 text-white">
-        <Link href="dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
+        <Link href="/dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
         <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
         <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
       </nav>

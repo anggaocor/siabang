@@ -61,6 +61,8 @@ export default function DashboardPage() {
       <nav className="flex justify-start mb-4">
       <h1 className="text-2xl font-bold">Dashboard Monitoring</h1>
         <Link href="/" className="mx-2 bg-blue-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
+        <Link href="/posts" className="mx-2 bg-green-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Data Pohon</Link>
+        <Link href="/InputPage" className="mx-2 bg-orange-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Input Data</Link>
       </nav>
       {loading ? (
         <p>Loading data...</p>
