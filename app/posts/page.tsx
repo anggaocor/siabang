@@ -194,11 +194,12 @@ const Posts = () => {
           <strong className="text-gray-300 text-2xl">DATA POHON</strong>
           {userEmail && <p className="text-sm text-gray-400">Login sebagai: {userEmail}</p>}
         </div>
-        <nav className="mb-6">
-          <Link href="/dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
-          <Link href="/InputPage" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
-          <button onClick={handleExport} className="mx-2 bg-green-600 border px-2 py-1 rounded hover:bg-green-600 hover:text-gray-300 transition cursor-pointer">Export ke Excel</button>
-          <button onClick={handleLogout} className="mx-2 bg-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-300 transition cursor-pointer">Logout</button>
+        <nav className="mb-6 flex flex-wrap gap-4">
+          <Link href="/" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Home</Link>
+          <Link href="/dashboard" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
+          <Link href="/InputPage" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
+          <button onClick={handleExport} className="bg-green-600 border px-2 py-1 rounded hover:bg-green-700 hover:text-gray-300 transition cursor-pointer">Export ke Excel</button>
+          <button onClick={handleLogout} className="bg-red-600 border px-2 py-1 rounded hover:bg-red-700 hover:text-gray-300 transition cursor-pointer">Logout</button>
         </nav>
 
         <input

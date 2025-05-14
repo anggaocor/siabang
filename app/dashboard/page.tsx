@@ -12,6 +12,12 @@ const supabase = createClient(
 );
 
 export default function DashboardPage() {
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/');
+  };
+
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [totalPohon, setTotalPohon] = useState(0);
@@ -58,11 +64,14 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6">
-      <nav className="flex justify-start mb-4">
-      <h1 className="text-2xl font-bold">Dashboard Monitoring</h1>
-        <Link href="/" className="mx-2 bg-blue-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
-        <Link href="/posts" className="mx-2 bg-green-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Data Pohon</Link>
-        <Link href="/InputPage" className="mx-2 bg-orange-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Input Data</Link>
+      <nav className="flex flex-wrap justify-between items-center mb-4 gap-2">
+        <h1 className="text-2xl font-bold flex-shrink-0">Dashboard Monitoring</h1>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/" className="font-medium bg-blue-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
+          <Link href="/posts" className="font-medium bg-green-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Data Pohon</Link>
+          <Link href="/InputPage" className="font-medium bg-orange-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Input Data</Link>
+          <button onClick={handleLogout} className="bg-red-600 border px-2 py-1 rounded hover:bg-red-700 hover:text-gray-300 transition cursor-pointer">Logout</button>
+        </div>
       </nav>
       {loading ? (
         <p>Loading data...</p>

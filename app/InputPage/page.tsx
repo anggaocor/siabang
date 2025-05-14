@@ -132,10 +132,11 @@ export default function InputPage() {
 
   return (
     <>
-      <nav className="p-3 bg-gray-800 text-white">
-        <Link href="/dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
-        <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
-        <button onClick={handleLogout} className="mx-2 text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
+      <nav className="p-3 bg-gray-800 text-white flex flex-wrap justify-center sm:justify-start gap-2">
+        <Link href="/" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Home</Link>
+        <Link href="/dashboard" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
+        <Link href="/posts" className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
+        <button onClick={handleLogout} className="text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer">Logout</button>
       </nav>
       <div className="flex flex-col items-center justify-center min-h-auto bg-gray-800 text-white">
         <main className="max-w-screen mx-auto p-4 bg-gray-600 text-white rounded-lg shadow-md mb-20 sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
