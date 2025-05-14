@@ -20,6 +20,7 @@ export default function InputPage() {
     kondisi_pohon: "",
     lokasi: "",
     tanggal_survey: "",
+    rekomendasi: "",
     foto: null as File | null,
     keterangan: "",
   });
@@ -91,6 +92,7 @@ export default function InputPage() {
       kondisi_pohon: formData.kondisi_pohon,
       lokasi: formData.lokasi,
       tanggal_survey: formData.tanggal_survey,
+      rekomendasi: formData.rekomendasi,
       foto_url,
       keterangan: formData.keterangan,
     });
@@ -106,6 +108,7 @@ export default function InputPage() {
         kondisi_pohon: "",
         lokasi: "",
         tanggal_survey: "",
+        rekomendasi: "",
         foto: null,
         keterangan: "",
       });
@@ -155,6 +158,8 @@ export default function InputPage() {
             <button type="button" onClick={detectLocation} className="w-full sm:w-auto text-gray-300 border px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer">Deteksi Lokasi Otomatis</button>
             <label className="block text-sm font-medium text-gray-300">Tanggal Survey</label>
             <input name="tanggal_survey" type="date" placeholder="Tanggal Survey" className="w-full p-2 border rounded-md" onChange={handleChange} value={formData.tanggal_survey} required />
+            <label className="block text-sm font-medium text-gray-300">Rekomendasi</label>
+            <input name="rekomendasi" placeholder="Rekomendasi" className="w-full p-2 border rounded-md" onChange={handleChange} value={formData.rekomendasi} required />
             <label className="block text-sm font-medium text-gray-300">Keterangan</label>
             <textarea name="keterangan" placeholder="Keterangan" className="w-full p-2 border rounded-md" onChange={handleChange} value={formData.keterangan} />
             <label className="block text-sm font-medium text-gray-300">Upload Foto</label>

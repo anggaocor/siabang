@@ -25,6 +25,7 @@ interface DataPohon {
   kondisi_pohon: string;
   lokasi: string;
   tanggal_survey: string;
+  rekomendasi: string;
   foto_url: string;
   keterangan: string;
   created_at: string;
@@ -43,15 +44,21 @@ const Posts = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user && user.email) {
-        setUserEmail(user.email);
-      } else {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error || !data.user) {
+          router.push('/login');
+        } else {
+         setUserEmail(data.user.email ?? null);
+        }
+      } catch (err) {
+        console.error('Error getting user', err);
         router.push('/login');
       }
     };
     getUser();
   }, [router]);
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -72,6 +79,7 @@ const Posts = () => {
       "Kondisi Pohon": item.kondisi_pohon,
       "Lokasi (GPS)": item.lokasi,
       "Tanggal Survey": new Date(item.tanggal_survey).toLocaleDateString("id-ID"),
+      "Rekomendasi": item.rekomendasi,
       "Keterangan": item.keterangan,
       "Tanggal Input": new Date(item.created_at).toLocaleDateString("id-ID"),
       "URL Foto": item.foto_url
@@ -79,7 +87,7 @@ const Posts = () => {
 
     exportToExcel(processedData, "Data_Pendataan_Pohon");
   }
-};
+  };
 
 
   useEffect(() => {
@@ -90,7 +98,7 @@ const Posts = () => {
         setError('Gagal mengambil data');
       } else {
         setPosts(data || []);
-        setFilteredPosts(data || []);
+        setFilteredPosts(Array.isArray(data) ? (data as DataPohon[]) : []);
       }
       setLoading(false);
     };
@@ -98,14 +106,12 @@ const Posts = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = posts.filter((post) =>
-      post.nama_pemohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.jenis_pohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.kondisi_pohon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.perihal.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filtered = posts.filter((post: DataPohon) => {
+      const title = `${post.nama_pemohon} ${post.perihal} ${post.jenis_pohon} ${post.kondisi_pohon} ${post.rekomendasi}`;
+      return title.toLowerCase().includes(searchTerm.toLowerCase());
+    });
     setFilteredPosts(filtered);
-  }, [searchTerm, posts]);
+  }, [posts, searchTerm]);
 
   const startEditing = (post: DataPohon) => {
     setEditingId(post.id);
@@ -127,6 +133,7 @@ const Posts = () => {
         kondisi_pohon: editData.kondisi_pohon,
         lokasi: editData.lokasi,
         tanggal_survey: editData.tanggal_survey,
+        rekomendasi: editData.rekomendasi,
         keterangan: editData.keterangan,
         foto_url: editData.foto_url,
       })
@@ -169,16 +176,15 @@ const Posts = () => {
       return;
     }
   
-    const { data: publicUrlData } = supabase
+    const { publicUrl } = supabase
       .storage
       .from('foto-pohon')
-      .getPublicUrl(filePath);
-  
-    const publicUrl = publicUrlData?.publicUrl;
-  
+      .getPublicUrl(filePath).data;
+
     if (publicUrl) {
       setEditData((prev) => ({ ...prev, foto_url: publicUrl }));
     }
+
   }; 
 
   return (
@@ -197,7 +203,7 @@ const Posts = () => {
 
         <input
           type="text"
-          placeholder="Cari berdasarkan nama pemohon atau jenis pohon..."
+          placeholder="Cari berdasarkan nama pemohon / perihal / jenis pohon / kondisi pohon / rekomendasi"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="px-3 py-2 border rounded w-full md:w-1/2 mb-6 text-black bg-gray-100"
@@ -267,16 +273,14 @@ const Posts = () => {
                     <div className="mb-2">
                       <label className="block text-sm font-medium text-gray-700">Jumlah Pohon</label>
                       <input
-                      type="number"
-                      value={editData.jumlah_pohon || 0}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        setEditData({
-                        ...editData,
-                        jumlah_pohon: isNaN(value) ? 0 : value
-                        });
-                      }}
-                      className="w-full border p-1 bg-gray-100"
+                        type="number"
+                        value={editData.jumlah_pohon ?? ''}
+                        onChange={(e) =>
+                          setEditData({
+                            ...editData,
+                            jumlah_pohon: e.target.value === '' ? undefined : parseInt(e.target.value)
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -308,6 +312,17 @@ const Posts = () => {
                       value={editData.tanggal_survey || ''}
                       onChange={(e) =>
                         setEditData({ ...editData, tanggal_survey: e.target.value })
+                      }
+                      className="mb-2 w-full border p-1 bg-gray-100"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Rekomendasi</label>
+                      <input
+                      type="text"
+                      value={editData.rekomendasi || ''}
+                      onChange={(e) =>
+                        setEditData({ ...editData, rekomendasi: e.target.value })
                       }
                       className="mb-2 w-full border p-1 bg-gray-100"
                       />
@@ -381,6 +396,7 @@ const Posts = () => {
                           })
                         : ''}
                     </p>
+                    <p><strong>Rekomendasi:</strong> {post.rekomendasi}</p>
                     <p><strong>Keterangan:</strong> {post.keterangan}</p>
                     <p>
                       <strong>Tanggal Input Data:</strong>{' '}
