@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import Link from "next/link";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -57,7 +58,10 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard Monitoring</h1>
+      <nav className="flex justify-start mb-4">
+      <h1 className="text-2xl font-bold">Dashboard Monitoring</h1>
+        <Link href="/" className="mx-2 bg-blue-300 border border-gray-300 px-1 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
+      </nav>
       {loading ? (
         <p>Loading data...</p>
       ) : (

@@ -14,7 +14,7 @@ return (
     <br/>
     <nav className="flex justify-start">
       <Link href="/" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Home</Link>
-      <Link href="dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard</Link>
+      <Link href="dashboard" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Dashboard Monitoring</Link>
       <Link href="/posts" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Data Pohon</Link>
       <Link href="/InputPage" className="mx-2 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition">Input Data</Link>
       <Link href="/login" className="mx-2 text-gray-300 border border-gray-300 px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition duration-300">Login</Link>
@@ -40,7 +40,7 @@ return (
 
       <div>
       <h2 className="text-xl font-semibold">Fitur Utama</h2>
-      <p>📋 Formulir Pendataan Digital, 📍 Integrasi Lokasi GPS, 📸 Unggah Foto Lapangan, 🗂 Database Terpusat, 📊 Dashboard Monitoring (pengembangan selanjutnya)</p>
+      <p>📋 Formulir Pendataan Digital, 📍 Integrasi Lokasi GPS, 📸 Unggah Foto Lapangan, 🗂 Database Terpusat, 📊 Dashboard Monitoring</p>
       </div>
 
       <div>
