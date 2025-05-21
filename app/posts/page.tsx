@@ -206,31 +206,31 @@ const Posts = () => {
         <nav className="mb-6 flex flex-wrap gap-4">
           <Link
             href="/"
-            className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+            className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
           >
             Home
           </Link>
           <Link
             href="/dashboard"
-            className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+            className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
           >
             Dashboard Monitoring
           </Link>
           <Link
             href="/InputPage"
-            className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+            className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
           >
             Input Data
           </Link>
           <button
             onClick={handleExport}
-            className="bg-green-600 border px-2 py-1 rounded hover:bg-green-700 hover:text-gray-300 transition cursor-pointer"
+            className="bg-green-600 border px-2 py-1 rounded hover:bg-green-300 hover:text-gray-800 transition cursor-pointer"
           >
             Export ke Excel
           </button>
           <button
             onClick={handleLogout}
-            className="bg-red-600 border px-2 py-1 rounded hover:bg-red-700 hover:text-gray-300 transition cursor-pointer"
+            className="bg-red-600 border px-2 py-1 rounded hover:bg-red-300 hover:text-gray-800 transition cursor-pointer"
           >
             Logout
           </button>
@@ -338,6 +338,7 @@ const Posts = () => {
                                 : parseInt(e.target.value),
                           })
                         }
+                        className="w-full border p-1 bg-gray-100"
                       />
                     </div>
                     <div>
@@ -371,7 +372,7 @@ const Posts = () => {
                       <button
                         type="button"
                         onClick={detectLocation}
-                        className="w-full sm:w-auto text-gray-300 border px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer"
+                        className="w-full sm:w-auto bg-blue-400 border px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer"
                       >
                         Deteksi Lokasi Otomatis
                       </button>

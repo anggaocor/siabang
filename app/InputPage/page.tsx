@@ -143,25 +143,25 @@ export default function InputPage() {
       <nav className="p-3 bg-gray-800 text-white flex flex-wrap justify-center sm:justify-start gap-2">
         <Link
           href="/"
-          className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+          className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
         >
           Home
         </Link>
         <Link
           href="/dashboard"
-          className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+          className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
         >
           Dashboard Monitoring
         </Link>
         <Link
           href="/posts"
-          className="text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
+          className="bg-gray-500 text-gray-300 border px-2 py-1 rounded hover:bg-gray-300 hover:text-gray-800 transition"
         >
           Data Pohon
         </Link>
         <button
           onClick={handleLogout}
-          className="text-red-600 border px-2 py-1 rounded hover:bg-red-600 hover:text-gray-800 transition cursor-pointer"
+          className="bg-red-600 border px-2 py-1 rounded hover:bg-red-300 hover:text-gray-800 transition cursor-pointer"
         >
           Logout
         </button>
@@ -256,7 +256,7 @@ export default function InputPage() {
             <button
               type="button"
               onClick={detectLocation}
-              className="w-full sm:w-auto text-gray-300 border px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer"
+              className="w-full sm:w-auto bg-blue-600 text-gray-300 border px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-800 transition cursor-pointer"
             >
               Deteksi Lokasi Otomatis
             </button>
@@ -298,7 +298,7 @@ export default function InputPage() {
             </label>
             <button
               type="button"
-              className="w-auto text-gray-800 border px-2 py-2 rounded-md bg-green-300 hover:text-white transition cursor-pointer text-sm"
+              className="w-auto border px-2 py-2 rounded-md bg-gray-500 hover:text-gray-800 transition cursor-pointer text-sm"
             >
               <div className="flex flex-col sm:flex-row items-center">
                 <input
@@ -347,7 +347,7 @@ export default function InputPage() {
             <br />
             <button
               disabled={uploading}
-              className="w-full sm:w-auto text-gray-300 border bg-blue-600 px-2 py-1 rounded-md hover:text-gray-800 transition cursor-pointer"
+              className="w-full sm:w-auto text-gray-300 border bg-green-600 px-2 py-1 rounded-md hover:text-gray-800 transition cursor-pointer"
             >
               {uploading ? "Menyimpan..." : "Simpan Data"}
             </button>
